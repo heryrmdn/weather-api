@@ -1,36 +1,32 @@
-import { Server } from "http";
+import { Server } from "node:http";
 import app from "./app";
 import config from "./config/config";
 import { redisProvider } from "./providers/redis.provider";
 const PORT = config.port;
 
-const closeServer = async (server: Server) => {
+const serverClose = async (server: Server | null = null) => {
   await redisProvider.quit();
-  await new Promise<void>((resolve, reject) => {
-    server.close((err) => {
-      if (err) reject(err);
-      else resolve();
-    });
-  });
-  process.exit(1);
+  if (server) {
+    await new Promise<void>((resolve) => server.close(() => resolve()));
+  }
 };
 
-const startServer = async () => {
+const serverStart = async () => {
+  let server = null;
   try {
     await redisProvider.connect();
+
+    server = app.listen(PORT, () => {
+      console.log(`Server ready at: http://localhost:${PORT}`);
+    });
   } catch (err) {
     console.error(`Error : ${err}`);
-    process.exit(1);
   }
 
-  const server = app.listen(PORT, () => {
-    console.log(`Server ready at: http://localhost:${PORT}`);
-  });
-
-  process.on("SIGINT", async () => closeServer(server));
-  process.on("SIGTERM", async () => closeServer(server));
-  process.on("uncaughtException", async () => closeServer(server));
-  process.on("unhandledRejection", async () => closeServer(server));
+  process.on("SIGINT", async () => serverClose(server));
+  process.on("SIGTERM", async () => serverClose(server));
+  process.on("uncaughtException", async () => serverClose(server));
+  process.on("unhandledRejection", async () => serverClose(server));
 };
 
-startServer();
+serverStart();

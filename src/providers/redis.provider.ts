@@ -7,16 +7,26 @@ export const redis = () => {
     if (!client) {
       client = createClient();
       client.on("error", (err) => console.error("Redis Client Error", err));
-      await client.connect();
-      console.log("Redis connected");
+      try {
+        await client.connect();
+        console.log("Redis connected");
+      } catch (err) {
+        console.error("Redis connection error: ", err);
+        throw err;
+      }
     }
   };
 
   const quit = async () => {
     if (client) {
-      await client.quit();
-      console.log("Redis disconnected");
-      client = null;
+      try {
+        await client.quit();
+        console.log("Redis disconnected");
+        client = null;
+      } catch (err) {
+        console.error("Redis quit failed: ", err);
+        throw err;
+      }
     }
   };
 
