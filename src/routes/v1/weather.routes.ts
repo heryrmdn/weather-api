@@ -2,8 +2,10 @@ import express from "express";
 import weatherController from "../../controllers/weather.controller";
 import { weatherService } from "../../services/weather.service";
 import { weatherRepository } from "../../repositories/weather.repository";
+import { openWeatherMapProvider } from "../../providers/open_weather_map.provider";
 const weatherRoutes = express.Router();
-const wr = weatherRepository();
+const ow = openWeatherMapProvider();
+const wr = weatherRepository(ow);
 const ws = weatherService(wr);
 const wc = weatherController(ws);
 
