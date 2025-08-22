@@ -1,5 +1,3 @@
-import { BaseResponse } from "./base";
-
 export interface WeatherByCoordinateRequest {
   lat: string;
   lon: string;
@@ -16,8 +14,6 @@ export interface WeatherByCityIdRequest {
 export interface WeatherByZipCodeRequest {
   zip: string;
 }
-
-export interface WeatherResponse extends BaseResponse<Weather> {}
 
 export interface Weather {
   coord: {

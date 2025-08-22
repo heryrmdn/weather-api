@@ -1,5 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import { WeatherService } from "../services/weather.service";
+import { WeatherByCityIdRequest, WeatherByCityNameRequest, WeatherByCoordinateRequest, WeatherByZipCodeRequest } from "../interfaces/weather";
+import { responseUtil } from "../utils/response.util";
 
 interface WeatherController {
   getWeatherByCoordinate(req: Request, res: Response, next: NextFunction): void;
@@ -10,19 +12,31 @@ interface WeatherController {
 
 const weatherController = (service: WeatherService): WeatherController => {
   const getWeatherByCoordinate = async (req: Request, res: Response, next: NextFunction) => {
-    // return service.getWeatherByCoordinate();
+    const { lat, lon } = req.query as unknown as WeatherByCoordinateRequest;
+    const data = service.getWeatherByCoordinate({ lat, lon });
+    const responseData = responseUtil.responseData(res.statusCode, res.statusMessage, data);
+    return res.send(res.statusCode).json(responseData);
   };
 
   const getWeatherByCityName = async (req: Request, res: Response, next: NextFunction) => {
-    // return service.getWeatherByCityName();
+    const { q } = req.query as unknown as WeatherByCityNameRequest;
+    const data = service.getWeatherByCityName({ q: q });
+    const responseData = responseUtil.responseData(res.statusCode, res.statusMessage, data);
+    return res.status(res.statusCode).json(responseData);
   };
 
   const getWeatherByCityId = async (req: Request, res: Response, next: NextFunction) => {
-    // return service.getWeatherByCityId();
+    const { id } = req.query as unknown as WeatherByCityIdRequest;
+    const data = service.getWeatherByCityId({ id: id });
+    const responseData = responseUtil.responseData(res.statusCode, res.statusMessage, data);
+    return res.status(res.statusCode).json(responseData);
   };
 
   const getWeatherByZipCode = async (req: Request, res: Response, next: NextFunction) => {
-    // return service.getWeatherByZipCode();
+    const { zip } = req.query as unknown as WeatherByZipCodeRequest;
+    const data = service.getWeatherByZipCode({ zip: zip });
+    const responseData = responseUtil.responseData(res.statusCode, res.statusMessage, data);
+    return res.status(res.statusCode).json(responseData);
   };
 
   return {

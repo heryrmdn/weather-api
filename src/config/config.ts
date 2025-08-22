@@ -1,5 +1,5 @@
 import dotenv from "dotenv";
-import { Config } from "../interfaces/base";
+import { Config } from "../interfaces/config";
 
 dotenv.config({ quiet: true });
 
