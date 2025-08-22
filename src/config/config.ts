@@ -1,5 +1,8 @@
 import dotenv from "dotenv";
-import { Config } from "../interfaces/config";
+
+export interface Config {
+  port: number;
+}
 
 dotenv.config({ quiet: true });
 
