@@ -14,29 +14,33 @@ const weatherController = (service: WeatherService): WeatherController => {
   const getWeatherByCoordinate = async (req: Request, res: Response, next: NextFunction) => {
     const { lat, lon } = req.query as unknown as WeatherByCoordinateRequest;
     const data = service.getWeatherByCoordinate({ lat, lon });
-    const responseData = responseUtil.responseData(res.statusCode, res.statusMessage, data);
-    return res.send(res.statusCode).json(responseData);
+    const responseData = responseUtil.responseData(200, "success", data);
+
+    return res.send(responseData);
   };
 
   const getWeatherByCityName = async (req: Request, res: Response, next: NextFunction) => {
     const { q } = req.query as unknown as WeatherByCityNameRequest;
     const data = service.getWeatherByCityName({ q: q });
-    const responseData = responseUtil.responseData(res.statusCode, res.statusMessage, data);
-    return res.status(res.statusCode).json(responseData);
+    const responseData = responseUtil.responseData(200, "success", data);
+
+    return res.send(responseData);
   };
 
   const getWeatherByCityId = async (req: Request, res: Response, next: NextFunction) => {
     const { id } = req.query as unknown as WeatherByCityIdRequest;
     const data = service.getWeatherByCityId({ id: id });
-    const responseData = responseUtil.responseData(res.statusCode, res.statusMessage, data);
-    return res.status(res.statusCode).json(responseData);
+    const responseData = responseUtil.responseData(200, "success", data);
+
+    return res.send(responseData);
   };
 
   const getWeatherByZipCode = async (req: Request, res: Response, next: NextFunction) => {
     const { zip } = req.query as unknown as WeatherByZipCodeRequest;
     const data = service.getWeatherByZipCode({ zip: zip });
-    const responseData = responseUtil.responseData(res.statusCode, res.statusMessage, data);
-    return res.status(res.statusCode).json(responseData);
+    const responseData = responseUtil.responseData(200, "success", data);
+
+    return res.send(responseData);
   };
 
   return {
