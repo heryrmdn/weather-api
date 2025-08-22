@@ -1,20 +1,27 @@
 import { NextFunction, Request, Response } from "express";
 import { WeatherService } from "../services/weather.service";
 
-const weatherController = (service: WeatherService) => {
-  const getWeatherByCoordinate = (req: Request, res: Response, next: NextFunction) => {
+interface WeatherController {
+  getWeatherByCoordinate(req: Request, res: Response, next: NextFunction): void;
+  getWeatherByCityName(req: Request, res: Response, next: NextFunction): void;
+  getWeatherByCityId(req: Request, res: Response, next: NextFunction): void;
+  getWeatherByZipCode(req: Request, res: Response, next: NextFunction): void;
+}
+
+const weatherController = (service: WeatherService): WeatherController => {
+  const getWeatherByCoordinate = async (req: Request, res: Response, next: NextFunction) => {
     // return service.getWeatherByCoordinate();
   };
 
-  const getWeatherByCityName = (req: Request, res: Response, next: NextFunction) => {
+  const getWeatherByCityName = async (req: Request, res: Response, next: NextFunction) => {
     // return service.getWeatherByCityName();
   };
 
-  const getWeatherByCityId = (req: Request, res: Response, next: NextFunction) => {
+  const getWeatherByCityId = async (req: Request, res: Response, next: NextFunction) => {
     // return service.getWeatherByCityId();
   };
 
-  const getWeatherByZipCode = (req: Request, res: Response, next: NextFunction) => {
+  const getWeatherByZipCode = async (req: Request, res: Response, next: NextFunction) => {
     // return service.getWeatherByZipCode();
   };
 
