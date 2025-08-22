@@ -1,17 +1,8 @@
-export interface WeatherByCoordinateRequest {
+export interface WeatherRequest {
   lat: string;
   lon: string;
-}
-
-export interface WeatherByCityNameRequest {
   q: string;
-}
-
-export interface WeatherByCityIdRequest {
   id: string;
-}
-
-export interface WeatherByZipCodeRequest {
   zip: string;
 }
 
