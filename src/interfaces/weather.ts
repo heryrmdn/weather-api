@@ -1,9 +1,9 @@
 export interface WeatherRequest {
-  lat: string;
-  lon: string;
-  q: string;
-  id: string;
-  zip: string;
+  lat?: string;
+  lon?: string;
+  q?: string;
+  id?: string;
+  zip?: string;
 }
 
 export interface WeatherResponse {
