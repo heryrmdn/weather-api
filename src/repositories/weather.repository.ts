@@ -1,20 +1,17 @@
 const weatherRepository = () => {
-  const getList = () => {};
+  const getWeatherByCoordinate = () => {};
 
-  const getDetail = () => {};
+  const getWeatherByCityName = () => {};
 
-  const create = () => {};
+  const getWeatherByCityId = () => {};
 
-  const update = () => {};
-
-  const drop = () => {};
+  const getWeatherByZipCode = () => {};
 
   return {
-    getList,
-    getDetail,
-    create,
-    update,
-    drop,
+    getWeatherByCoordinate,
+    getWeatherByCityName,
+    getWeatherByCityId,
+    getWeatherByZipCode,
   };
 };
 

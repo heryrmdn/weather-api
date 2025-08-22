@@ -1,20 +1,19 @@
+import { Request, Response } from "express";
+
 const weatherController = () => {
-  const getList = () => {};
+  const getWeatherByCoordinate = (req: Request, res: Response) => {};
 
-  const getDetail = () => {};
+  const getWeatherByCityName = (req: Request, res: Response) => {};
 
-  const create = () => {};
+  const getWeatherByCityId = (req: Request, res: Response) => {};
 
-  const update = () => {};
-
-  const drop = () => {};
+  const getWeatherByZipCode = (req: Request, res: Response) => {};
 
   return {
-    getList,
-    getDetail,
-    create,
-    update,
-    drop,
+    getWeatherByCoordinate,
+    getWeatherByCityName,
+    getWeatherByCityId,
+    getWeatherByZipCode,
   };
 };
 
