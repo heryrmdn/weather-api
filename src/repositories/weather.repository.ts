@@ -1,11 +1,28 @@
-const weatherRepository = () => {
-  const getWeatherByCoordinate = () => {};
+import { Weather, WeatherByCityIdRequest, WeatherByCityNameRequest, WeatherByCoordinateRequest, WeatherByZipCodeRequest } from "../interfaces/weather";
 
-  const getWeatherByCityName = () => {};
+export interface WeatherRepository {
+  getWeatherByCoordinate(req: WeatherByCoordinateRequest): Promise<Weather | null>;
+  getWeatherByCityName(req: WeatherByCityNameRequest): Promise<Weather | null>;
+  getWeatherByCityId(req: WeatherByCityIdRequest): Promise<Weather | null>;
+  getWeatherByZipCode(req: WeatherByZipCodeRequest): Promise<Weather | null>;
+}
 
-  const getWeatherByCityId = () => {};
+export const weatherRepository = (): WeatherRepository => {
+  const getWeatherByCoordinate = async (req: WeatherByCoordinateRequest): Promise<Weather | null> => {
+    return null;
+  };
 
-  const getWeatherByZipCode = () => {};
+  const getWeatherByCityName = async (req: WeatherByCityNameRequest): Promise<Weather | null> => {
+    return null;
+  };
+
+  const getWeatherByCityId = async (req: WeatherByCityIdRequest): Promise<Weather | null> => {
+    return null;
+  };
+
+  const getWeatherByZipCode = async (req: WeatherByZipCodeRequest): Promise<Weather | null> => {
+    return null;
+  };
 
   return {
     getWeatherByCoordinate,
@@ -14,5 +31,3 @@ const weatherRepository = () => {
     getWeatherByZipCode,
   };
 };
-
-export default weatherRepository;

@@ -1,7 +1,11 @@
 import express from "express";
 import weatherController from "../../controllers/weather.controller";
+import { weatherService } from "../../services/weather.service";
+import { weatherRepository } from "../../repositories/weather.repository";
 const weatherRoutes = express.Router();
-const wc = weatherController();
+const wr = weatherRepository();
+const ws = weatherService(wr);
+const wc = weatherController(ws);
 
 weatherRoutes.get("/weather/coordinate", wc.getWeatherByCoordinate);
 weatherRoutes.get("/weather/city_name", wc.getWeatherByCityName);

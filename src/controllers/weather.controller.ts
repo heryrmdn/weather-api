@@ -1,13 +1,22 @@
-import { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
+import { WeatherService } from "../services/weather.service";
 
-const weatherController = () => {
-  const getWeatherByCoordinate = (req: Request, res: Response) => {};
+const weatherController = (service: WeatherService) => {
+  const getWeatherByCoordinate = (req: Request, res: Response, next: NextFunction) => {
+    // return service.getWeatherByCoordinate();
+  };
 
-  const getWeatherByCityName = (req: Request, res: Response) => {};
+  const getWeatherByCityName = (req: Request, res: Response, next: NextFunction) => {
+    // return service.getWeatherByCityName();
+  };
 
-  const getWeatherByCityId = (req: Request, res: Response) => {};
+  const getWeatherByCityId = (req: Request, res: Response, next: NextFunction) => {
+    // return service.getWeatherByCityId();
+  };
 
-  const getWeatherByZipCode = (req: Request, res: Response) => {};
+  const getWeatherByZipCode = (req: Request, res: Response, next: NextFunction) => {
+    // return service.getWeatherByZipCode();
+  };
 
   return {
     getWeatherByCoordinate,
