@@ -10,22 +10,22 @@ export interface WeatherRepository {
 
 export const weatherRepository = (provider: OpenWeatherMapProvider): WeatherRepository => {
   const getWeatherByCoordinate = async (req: WeatherByCoordinateRequest): Promise<Weather | null> => {
-    const data = provider.getWeatherByCoordinate(req);
+    const data = await provider.getWeatherByCoordinate(req);
     return data;
   };
 
   const getWeatherByCityName = async (req: WeatherByCityNameRequest): Promise<Weather | null> => {
-    const data = provider.getWeatherByCityName(req);
+    const data = await provider.getWeatherByCityName(req);
     return data;
   };
 
   const getWeatherByCityId = async (req: WeatherByCityIdRequest): Promise<Weather | null> => {
-    const data = provider.getWeatherByCityId(req);
+    const data = await provider.getWeatherByCityId(req);
     return data;
   };
 
   const getWeatherByZipCode = async (req: WeatherByZipCodeRequest): Promise<Weather | null> => {
-    const data = provider.getWeatherByZipCode(req);
+    const data = await provider.getWeatherByZipCode(req);
     return data;
   };
 
