@@ -8,12 +8,12 @@ interface Response {
 interface ResponseUtil {
   responseMessage(status: number, message: string): Response;
   responseData(status: number, message: string, data: any): Response;
-  responseError(status: number, message: string, err: any): Response;
+  responseError(status: number, message: string, err?: any): Response;
 }
 
 const response = (): ResponseUtil => {
   const responseMessage = (status: number, message: string): Response => {
-    const response = {
+    const response: Response = {
       status: status,
       message: message,
     };
@@ -21,7 +21,7 @@ const response = (): ResponseUtil => {
   };
 
   const responseData = (status: number, message: string, data: any): Response => {
-    const response = {
+    const response: Response = {
       status: status,
       message: message,
       data: data,
@@ -30,11 +30,14 @@ const response = (): ResponseUtil => {
   };
 
   const responseError = (status: number, message: string, error: any): Response => {
-    const response = {
+    const response: Response = {
       status: status,
       message: message,
-      error: error,
     };
+
+    if (error) {
+      response.error = error;
+    }
     return response;
   };
 

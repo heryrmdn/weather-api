@@ -15,7 +15,6 @@ const weatherController = (service: WeatherService): WeatherController => {
     const { lat, lon } = req.query as unknown as WeatherByCoordinateRequest;
     const data = await service.getWeatherByCoordinate({ lat, lon });
     const responseData = responseUtil.responseData(200, "success", data);
-
     return res.send(responseData);
   };
 
@@ -23,7 +22,6 @@ const weatherController = (service: WeatherService): WeatherController => {
     const { q } = req.query as unknown as WeatherByCityNameRequest;
     const data = await service.getWeatherByCityName({ q: q });
     const responseData = responseUtil.responseData(200, "success", data);
-
     return res.send(responseData);
   };
 
@@ -31,7 +29,6 @@ const weatherController = (service: WeatherService): WeatherController => {
     const { id } = req.query as unknown as WeatherByCityIdRequest;
     const data = await service.getWeatherByCityId({ id: id });
     const responseData = responseUtil.responseData(200, "success", data);
-
     return res.send(responseData);
   };
 
@@ -39,7 +36,6 @@ const weatherController = (service: WeatherService): WeatherController => {
     const { zip } = req.query as unknown as WeatherByZipCodeRequest;
     const data = await service.getWeatherByZipCode({ zip: zip });
     const responseData = responseUtil.responseData(200, "success", data);
-
     return res.send(responseData);
   };
 
