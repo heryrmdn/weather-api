@@ -2,7 +2,6 @@ import { createClient, RedisClientType } from "redis";
 
 export const redis = () => {
   let client: RedisClientType | null = null;
-  let retries: number = 0;
 
   const connect = async () => {
     if (!client) {
