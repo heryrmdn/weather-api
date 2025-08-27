@@ -2,31 +2,35 @@ import { createClient, RedisClientType } from "redis";
 
 export const redis = () => {
   let client: RedisClientType | null = null;
+  let retries: number = 0;
 
   const connect = async () => {
     if (!client) {
-      client = createClient();
-      client.on("error", (err) => console.error("Redis Client Error", err));
-      try {
-        await client.connect();
-        console.log("Redis connected");
-      } catch (err) {
-        console.error("Redis connection error: ", err);
-        throw err;
-      }
+      client = createClient({
+        socket: {
+          reconnectStrategy: (retries) => {
+            if (retries >= 5) {
+              return new Error("Reconnect limit reached");
+            }
+            return Math.min(retries * 100, 3000);
+          },
+        },
+      });
+
+      client.on("error", (err) => {
+        console.error("Redis Client Error", err);
+      });
+
+      await client.connect();
+      console.log("Redis connected");
     }
   };
 
   const quit = async () => {
     if (client) {
-      try {
-        await client.quit();
-        console.log("Redis disconnected");
-        client = null;
-      } catch (err) {
-        console.error("Redis quit failed: ", err);
-        throw err;
-      }
+      await client.quit();
+      console.log("Redis disconnected");
+      client = null;
     }
   };
 
