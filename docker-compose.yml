@@ -1,7 +1,14 @@
-version: "3.8"
+version: "3.9"
 
 services:
   redis:
-    image: redis
+    container_name: redis-weather-api
+    image: redis/redis-stack
     ports:
       - 6379:6379
+    volumes:
+      - ./redisdata:/data
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: on-failure
