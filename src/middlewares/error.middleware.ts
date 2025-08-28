@@ -14,7 +14,7 @@ export class CustomError extends Error {
 }
 
 const error = () => {
-  const errorHandler = (err: CustomError, _: any, res: Response) => {
+  const errorHandler = (err: CustomError, req: Request, res: Response, next: NextFunction) => {
     const errStatus = err.status || status.INTERNAL_SERVER_ERROR;
     const message = err.message || status["500_NAME"];
     const error = err.error || null;

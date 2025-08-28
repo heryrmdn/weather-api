@@ -13,31 +13,47 @@ interface WeatherController {
 
 const weatherController = (service: WeatherService): WeatherController => {
   const getWeatherByCoordinate = async (req: Request, res: Response, next: NextFunction) => {
-    const { lat, lon } = req.query as unknown as WeatherByCoordinateRequest;
-    const data = await service.getWeatherByCoordinate({ lat, lon });
-    const responseData = responseUtil.responseData(status.OK, status["200_NAME"], data);
-    return res.json(responseData);
+    try {
+      const { lat, lon } = req.query as unknown as WeatherByCoordinateRequest;
+      const data = await service.getWeatherByCoordinate({ lat, lon });
+      const responseData = responseUtil.responseData(status.OK, status["200_NAME"], data);
+      return res.status(status.OK).json(responseData);
+    } catch (err) {
+      next(err);
+    }
   };
 
   const getWeatherByCityName = async (req: Request, res: Response, next: NextFunction) => {
-    const { q } = req.query as unknown as WeatherByCityNameRequest;
-    const data = await service.getWeatherByCityName({ q: q });
-    const responseData = responseUtil.responseData(status.OK, status["200_NAME"], data);
-    return res.json(responseData);
+    try {
+      const { q } = req.query as unknown as WeatherByCityNameRequest;
+      const data = await service.getWeatherByCityName({ q: q });
+      const responseData = responseUtil.responseData(status.OK, status["200_NAME"], data);
+      return res.status(status.OK).json(responseData);
+    } catch (err) {
+      next(err);
+    }
   };
 
   const getWeatherByCityId = async (req: Request, res: Response, next: NextFunction) => {
-    const { id } = req.query as unknown as WeatherByCityIdRequest;
-    const data = await service.getWeatherByCityId({ id: id });
-    const responseData = responseUtil.responseData(status.OK, status["200_NAME"], data);
-    return res.json(responseData);
+    try {
+      const { id } = req.query as unknown as WeatherByCityIdRequest;
+      const data = await service.getWeatherByCityId({ id: id });
+      const responseData = responseUtil.responseData(status.OK, status["200_NAME"], data);
+      return res.status(status.OK).json(responseData);
+    } catch (err) {
+      next(err);
+    }
   };
 
   const getWeatherByZipCode = async (req: Request, res: Response, next: NextFunction) => {
-    const { zip } = req.query as unknown as WeatherByZipCodeRequest;
-    const data = await service.getWeatherByZipCode({ zip: zip });
-    const responseData = responseUtil.responseData(status.OK, status["200_NAME"], data);
-    return res.json(responseData);
+    try {
+      const { zip } = req.query as unknown as WeatherByZipCodeRequest;
+      const data = await service.getWeatherByZipCode({ zip: zip });
+      const responseData = responseUtil.responseData(status.OK, status["200_NAME"], data);
+      return res.status(status.OK).json(responseData);
+    } catch (err) {
+      next(err);
+    }
   };
 
   return {
