@@ -30,6 +30,9 @@ export const openWeatherMapProvider = (): OpenWeatherMapProvider => {
     const url = `${config.weather_api_url}/weather?q=${q}&appid=${config.weather_api_key}`;
     try {
       const response = await fetch(url);
+      if (!response.ok) {
+        throw new CustomError(response.status, response.statusText);
+      }
       const data = await response.json();
       return data;
     } catch (err) {
@@ -42,6 +45,9 @@ export const openWeatherMapProvider = (): OpenWeatherMapProvider => {
     const url = `${config.weather_api_url}/weather?id=${id}&appid=${config.weather_api_key}`;
     try {
       const response = await fetch(url);
+      if (!response.ok) {
+        throw new CustomError(response.status, response.statusText);
+      }
       const data = await response.json();
       return data;
     } catch (err) {
@@ -54,6 +60,9 @@ export const openWeatherMapProvider = (): OpenWeatherMapProvider => {
     const url = `${config.weather_api_url}/weather?zip=${zip}&appid=${config.weather_api_key}`;
     try {
       const response = await fetch(url);
+      if (!response.ok) {
+        throw new CustomError(response.status, response.statusText);
+      }
       const data = await response.json();
       return data;
     } catch (err) {

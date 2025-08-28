@@ -1,5 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import { responseUtil } from "../utils/response.util";
+import status from "http-status";
 
 export class CustomError extends Error {
   status: number;
@@ -14,11 +15,11 @@ export class CustomError extends Error {
 
 const error = () => {
   const errorHandler = (err: CustomError, _: any, res: Response) => {
-    const status = err.status || 500;
-    const message = err.message || "Internal Server Error";
+    const errStatus = err.status || status.INTERNAL_SERVER_ERROR;
+    const message = err.message || status["500_NAME"];
     const error = err.error || null;
-    const responseError = responseUtil.responseError(status, message, error);
-    return res.status(status).json(responseError);
+    const responseError = responseUtil.responseError(errStatus, message, error);
+    return res.status(errStatus).json(responseError);
   };
   return {
     errorHandler,
