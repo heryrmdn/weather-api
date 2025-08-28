@@ -1,46 +1,42 @@
-import { createClient, RedisClientType } from "redis";
+import Redis from "ioredis";
 
-export const redis = () => {
-  let client: RedisClientType | null = null;
+const redis = () => {
+  let redisClient: Redis | null = null;
 
   const connect = async () => {
-    if (!client) {
-      client = createClient({
-        socket: {
-          reconnectStrategy: (retries) => {
-            if (retries >= 5) {
-              return new Error("Reconnect limit reached");
-            }
-            return Math.min(retries * 100, 3000);
-          },
-        },
-      });
-
-      client.on("error", (err) => {
-        console.error("Redis Client Error", err);
-      });
-
-      await client.connect();
-      console.log("Redis connected");
+    const activeClient = redisProvider.getClient();
+    if (activeClient) {
+      return activeClient;
     }
+    const client = new Redis({
+      host: "127.0.0.1",
+      port: 6379,
+    });
+    redisProvider.setClient(client);
   };
 
   const quit = async () => {
-    if (client) {
-      await client.quit();
-      console.log("Redis disconnected");
-      client = null;
+    const activeClient = redisProvider.getClient();
+    if (!activeClient) {
+      return;
     }
+    activeClient.quit();
+    redisProvider.setClient(null);
   };
 
-  const getClient = (): RedisClientType | null => {
-    return client;
+  const getClient = (): Redis | null => {
+    return redisClient;
+  };
+
+  const setClient = (client: Redis | null) => {
+    return (redisClient = client);
   };
 
   return {
     connect,
     quit,
     getClient,
+    setClient,
   };
 };
 
