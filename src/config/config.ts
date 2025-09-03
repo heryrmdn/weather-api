@@ -3,17 +3,21 @@ import dotenv from "dotenv";
 export interface Config {
   port: number;
   node_env: string;
-  weather_api_key: string | null;
-  weather_api_url: string | null;
+  redis_host: string;
+  redis_port: number;
+  weather_api_key: string;
+  weather_api_url: string;
 }
 
 dotenv.config({ quiet: true });
 
 const config: Config = {
-  port: Number(process.env.PORT) ?? 3000,
-  node_env: process.env.NODE_ENV ?? "DEVELOPMENT",
-  weather_api_key: process.env.WEATHER_API_KEY ?? null,
-  weather_api_url: process.env.WEATHER_API_URL ?? null,
+  port: Number(process.env.PORT),
+  node_env: process.env.NODE_ENV ?? "",
+  redis_host: process.env.REDIS_HOST ?? "",
+  redis_port: Number(process.env.REDIS_PORT),
+  weather_api_key: process.env.WEATHER_API_KEY ?? "",
+  weather_api_url: process.env.WEATHER_API_URL ?? "",
 };
 
 export default config;

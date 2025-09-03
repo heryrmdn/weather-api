@@ -1,42 +1,29 @@
 import Redis from "ioredis";
+import config from "../config/config";
 
-const redis = () => {
-  let redisClient: Redis | null = null;
+interface RedisProvider {
+  connect: () => Promise<Redis>;
+  quit: (client: Redis) => Promise<void>;
+}
 
-  const connect = async () => {
-    const activeClient = redisProvider.getClient();
-    if (activeClient) {
-      return activeClient;
-    }
-    const client = new Redis({
-      host: "127.0.0.1",
-      port: 6379,
+const redis = (): RedisProvider => {
+  const connect = async (): Promise<Redis> => {
+    const redisClient = new Redis({
+      host: config.redis_host,
+      port: config.redis_port,
     });
-    redisProvider.setClient(client);
-  };
-
-  const quit = async () => {
-    const activeClient = redisProvider.getClient();
-    if (!activeClient) {
-      return;
-    }
-    activeClient.quit();
-    redisProvider.setClient(null);
-  };
-
-  const getClient = (): Redis | null => {
+    console.log("Redis connected");
     return redisClient;
   };
 
-  const setClient = (client: Redis | null) => {
-    return (redisClient = client);
+  const quit = async (client: Redis) => {
+    await client.quit();
+    console.log("Redis disconnected");
   };
 
   return {
     connect,
     quit,
-    getClient,
-    setClient,
   };
 };
 
