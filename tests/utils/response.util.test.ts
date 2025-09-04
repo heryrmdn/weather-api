@@ -7,12 +7,14 @@ describe("responseUtil", () => {
       expect(responseMessage).toEqual({ status: 200, message: "OK" });
     });
   });
+
   describe("responseData", () => {
     it("Test", () => {
       const responseData = responseUtil.responseData(200, "OK", { id: 1, name: "name 1" });
       expect(responseData).toEqual({ status: 200, message: "OK", data: { id: 1, name: "name 1" } });
     });
   });
+
   describe("responseError", () => {
     it("Test", () => {
       const error = new Error("Got some Error");
