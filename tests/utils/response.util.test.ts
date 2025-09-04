@@ -9,8 +9,8 @@ describe("responseUtil", () => {
   });
   describe("responseData", () => {
     it("Test", () => {
-      const responseData = responseUtil.responseData(200, "OK", "data");
-      expect(responseData).toEqual({ status: 200, message: "OK", data: "data" });
+      const responseData = responseUtil.responseData(200, "OK", { id: 1, name: "name 1" });
+      expect(responseData).toEqual({ status: 200, message: "OK", data: { id: 1, name: "name 1" } });
     });
   });
   describe("responseError", () => {
