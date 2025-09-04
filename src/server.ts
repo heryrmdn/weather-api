@@ -2,31 +2,14 @@ import { Server } from "node:http";
 import app from "./app";
 import Redis from "ioredis";
 import dotenv from "dotenv";
-import { Config, ConfigLoader, configLoader } from "./config/config";
-import { Providers, ProvidersLoader, providersLoader } from "./providers";
-import { Repositories, RepositoriesLoader, repositoriesLoader } from "./repositories";
-import { Services, ServicesLoader, servicesLoader } from "./services";
-import { Controllers, ControllersLoader, controllersLoader } from "./controllers";
-import { Middlewares, middlewaresLoader, MiddlewaresLoader } from "./middlewares";
+import { configLoader } from "./config/config";
+import { Providers, providersLoader } from "./providers";
+import { repositoriesLoader } from "./repositories";
+import { servicesLoader } from "./services";
+import { controllersLoader } from "./controllers";
+import { middlewaresLoader } from "./middlewares";
 
-let cl: ConfigLoader;
-let config: Config;
-
-let ml: MiddlewaresLoader;
-let middlewares: Middlewares;
-
-let pl: ProvidersLoader;
 let providers: Providers;
-
-let rl: RepositoriesLoader;
-let repositories: Repositories;
-
-let sl: ServicesLoader;
-let services: Services;
-
-let ctl: ControllersLoader;
-let controllers: Controllers;
-
 let redis: Redis;
 let server: Server;
 
@@ -34,25 +17,25 @@ const startServer = async () => {
   try {
     dotenv.config({ quiet: true });
 
-    cl = configLoader();
-    config = cl.load();
+    const cl = configLoader();
+    const config = cl.load();
 
-    ml = middlewaresLoader();
-    middlewares = ml.load();
+    const ml = middlewaresLoader();
+    const middlewares = ml.load();
 
-    pl = providersLoader(config);
+    const pl = providersLoader(config);
     providers = pl.load();
 
     redis = await providers.redisProvider.connect();
 
-    rl = repositoriesLoader(providers, redis);
-    repositories = rl.load();
+    const rl = repositoriesLoader(providers, redis);
+    const repositories = rl.load();
 
-    sl = servicesLoader(repositories);
-    services = sl.load();
+    const sl = servicesLoader(repositories);
+    const services = sl.load();
 
-    ctl = controllersLoader(services);
-    controllers = ctl.load();
+    const ctl = controllersLoader(services);
+    const controllers = ctl.load();
 
     app.use(middlewares.errorMiddleware.errorHandler);
     app.use(middlewares.notFoundMiddleware.notFoundHandler);
