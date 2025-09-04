@@ -56,7 +56,8 @@ export const appLoader = (): AppLoader => {
     try {
       redis = await providers.redisProvider.connect();
     } catch (err) {
-      throw err;
+      console.log(err);
+      process.exit(1);
     }
 
     const rl = repositoriesLoader(providers, redis);
