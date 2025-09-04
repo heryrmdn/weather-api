@@ -20,7 +20,7 @@ export const weatherRepository = (p: Providers, c: Redis): WeatherRepository => 
         return JSON.parse(cachedData);
       }
       const data = await p.openWeatherMapProvider.getWeatherByCoordinate(req);
-      await c.set(cachedKey, JSON.stringify(data));
+      await c.set(cachedKey, JSON.stringify(data), "EX", 10000);
       return data;
     } catch (err) {
       throw err;
@@ -37,7 +37,7 @@ export const weatherRepository = (p: Providers, c: Redis): WeatherRepository => 
         return JSON.parse(cachedData);
       }
       const data = await p.openWeatherMapProvider.getWeatherByCityName(req);
-      await c.set(cachedKey, JSON.stringify(data));
+      await c.set(cachedKey, JSON.stringify(data), "EX", 10000);
       return data;
     } catch (err) {
       throw err;
@@ -54,7 +54,7 @@ export const weatherRepository = (p: Providers, c: Redis): WeatherRepository => 
         return JSON.parse(cachedData);
       }
       const data = await p.openWeatherMapProvider.getWeatherByCityId(req);
-      await c.set(cachedKey, JSON.stringify(data));
+      await c.set(cachedKey, JSON.stringify(data), "EX", 10000);
       return data;
     } catch (err) {
       throw err;
@@ -71,7 +71,7 @@ export const weatherRepository = (p: Providers, c: Redis): WeatherRepository => 
         return JSON.parse(cachedData);
       }
       const data = await p.openWeatherMapProvider.getWeatherByZipCode(req);
-      await c.set(cachedKey, JSON.stringify(data));
+      await c.set(cachedKey, JSON.stringify(data), "EX", 10000);
       return data;
     } catch (err) {
       throw err;
