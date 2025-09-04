@@ -15,7 +15,4 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use(routes);
 
-app.use(notFoundMiddleware.notFoundHandler);
-app.use(errorMiddleware.errorHandler);
-
 export default app;

@@ -13,7 +13,11 @@ export class CustomError extends Error {
   }
 }
 
-const error = () => {
+export interface ErrorMiddleware {
+  errorHandler: (err: CustomError, req: Request, res: Response, next: NextFunction) => void;
+}
+
+export const errorMiddleware = (): ErrorMiddleware => {
   const errorHandler = (err: CustomError, req: Request, res: Response, next: NextFunction) => {
     const errStatus = err.status || status.INTERNAL_SERVER_ERROR;
     const message = err.message || status["500_NAME"];
@@ -25,5 +29,3 @@ const error = () => {
     errorHandler,
   };
 };
-
-export const errorMiddleware = error();

@@ -1,32 +1,77 @@
 import { Server } from "node:http";
 import app from "./app";
-import config from "./config/config";
-import { redisProvider } from "./providers/redis.provider";
 import Redis from "ioredis";
-const PORT = config.port;
+import dotenv from "dotenv";
+import { Config, ConfigLoader, configLoader } from "./config/config";
+import { Providers, ProvidersLoader, providersLoader } from "./providers";
+import { Repositories, RepositoriesLoader, repositoriesLoader } from "./repositories";
+import { Services, ServicesLoader, servicesLoader } from "./services";
+import { Controllers, ControllersLoader, controllersLoader } from "./controllers";
+import { Middlewares, middlewaresLoader, MiddlewaresLoader } from "./middlewares";
+
+let cl: ConfigLoader;
+let config: Config;
+
+let ml: MiddlewaresLoader;
+let middlewares: Middlewares;
+
+let pl: ProvidersLoader;
+let providers: Providers;
+
+let rl: RepositoriesLoader;
+let repositories: Repositories;
+
+let sl: ServicesLoader;
+let services: Services;
+
+let ctl: ControllersLoader;
+let controllers: Controllers;
+
+let redis: Redis;
+let server: Server;
 
 const startServer = async () => {
-  let redisClient: Redis | null = null;
-  let server: Server | null = null;
-
   try {
-    redisClient = await redisProvider.connect();
+    dotenv.config({ quiet: true });
 
-    server = app.listen(PORT, () => console.log(`Server ready at: http://localhost:${PORT}`));
+    cl = configLoader();
+    config = cl.load();
+
+    ml = middlewaresLoader();
+    middlewares = ml.load();
+
+    pl = providersLoader(config);
+    providers = pl.load();
+
+    rl = repositoriesLoader(providers);
+    repositories = rl.load();
+
+    sl = servicesLoader(repositories);
+    services = sl.load();
+
+    ctl = controllersLoader(services);
+    controllers = ctl.load();
+
+    app.use(middlewares.errorMiddleware.errorHandler);
+    app.use(middlewares.notFoundMiddleware.notFoundHandler);
+
+    redis = await providers.redisProvider.connect();
+
+    server = app.listen(config.port, () => {
+      console.log(`Server ready at: ${config.host}:${config.port}`);
+    });
   } catch (err) {
-    console.error(err);
+    throw err;
   }
 
-  if (server && redisClient) {
-    process.on("SIGTERM", async () => serverClose(server, redisClient));
-    process.on("SIGINT", async () => serverClose(server, redisClient));
-  }
+  process.on("SIGTERM", async () => serverClose(server, redis));
+  process.on("SIGINT", async () => serverClose(server, redis));
 };
 
-const serverClose = async (server: Server, redisClient: Redis) => {
+const serverClose = async (server: Server, redis: Redis) => {
   console.log("Received kill signal, shutting down gracefully");
 
-  await redisProvider.quit(redisClient);
+  await providers.redisProvider.quit(redis);
   server.close(() => {
     console.log("Closed out remaining connections");
     process.exit(0);

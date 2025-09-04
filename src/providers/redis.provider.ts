@@ -1,12 +1,12 @@
 import Redis from "ioredis";
-import config from "../config/config";
+import { Config } from "../config/config";
 
-interface RedisProvider {
+export interface RedisProvider {
   connect: () => Promise<Redis>;
   quit: (client: Redis) => Promise<void>;
 }
 
-const redis = (): RedisProvider => {
+export const redisProvider = (config: Config): RedisProvider => {
   const connect = async (): Promise<Redis> => {
     const redisClient = new Redis({
       host: config.redis_host,
@@ -26,5 +26,3 @@ const redis = (): RedisProvider => {
     quit,
   };
 };
-
-export const redisProvider = redis();

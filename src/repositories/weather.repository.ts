@@ -1,5 +1,5 @@
 import { Weather, WeatherByCityIdRequest, WeatherByCityNameRequest, WeatherByCoordinateRequest, WeatherByZipCodeRequest } from "../interfaces/weather";
-import { OpenWeatherMapProvider } from "../providers/open_weather_map.provider";
+import { Providers } from "../providers";
 
 export interface WeatherRepository {
   getWeatherByCoordinate(req: WeatherByCoordinateRequest): Promise<Weather | null>;
@@ -8,24 +8,24 @@ export interface WeatherRepository {
   getWeatherByZipCode(req: WeatherByZipCodeRequest): Promise<Weather | null>;
 }
 
-export const weatherRepository = (provider: OpenWeatherMapProvider): WeatherRepository => {
+export const weatherRepository = (p: Providers): WeatherRepository => {
   const getWeatherByCoordinate = async (req: WeatherByCoordinateRequest): Promise<Weather | null> => {
-    const data = await provider.getWeatherByCoordinate(req);
+    const data = await p.openWeatherMapProvider.getWeatherByCoordinate(req);
     return data;
   };
 
   const getWeatherByCityName = async (req: WeatherByCityNameRequest): Promise<Weather | null> => {
-    const data = await provider.getWeatherByCityName(req);
+    const data = await p.openWeatherMapProvider.getWeatherByCityName(req);
     return data;
   };
 
   const getWeatherByCityId = async (req: WeatherByCityIdRequest): Promise<Weather | null> => {
-    const data = await provider.getWeatherByCityId(req);
+    const data = await p.openWeatherMapProvider.getWeatherByCityId(req);
     return data;
   };
 
   const getWeatherByZipCode = async (req: WeatherByZipCodeRequest): Promise<Weather | null> => {
-    const data = await provider.getWeatherByZipCode(req);
+    const data = await p.openWeatherMapProvider.getWeatherByZipCode(req);
     return data;
   };
 
