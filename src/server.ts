@@ -43,7 +43,9 @@ const startServer = async () => {
     pl = providersLoader(config);
     providers = pl.load();
 
-    rl = repositoriesLoader(providers);
+    redis = await providers.redisProvider.connect();
+
+    rl = repositoriesLoader(providers, redis);
     repositories = rl.load();
 
     sl = servicesLoader(repositories);
@@ -54,8 +56,6 @@ const startServer = async () => {
 
     app.use(middlewares.errorMiddleware.errorHandler);
     app.use(middlewares.notFoundMiddleware.notFoundHandler);
-
-    redis = await providers.redisProvider.connect();
 
     server = app.listen(config.port, () => {
       console.log(`Server ready at: ${config.host}:${config.port}`);

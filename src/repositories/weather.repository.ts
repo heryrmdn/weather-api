@@ -1,3 +1,4 @@
+import Redis from "ioredis";
 import { Weather, WeatherByCityIdRequest, WeatherByCityNameRequest, WeatherByCoordinateRequest, WeatherByZipCodeRequest } from "../interfaces/weather";
 import { Providers } from "../providers";
 
@@ -8,25 +9,73 @@ export interface WeatherRepository {
   getWeatherByZipCode(req: WeatherByZipCodeRequest): Promise<Weather | null>;
 }
 
-export const weatherRepository = (p: Providers): WeatherRepository => {
+export const weatherRepository = (p: Providers, c: Redis): WeatherRepository => {
   const getWeatherByCoordinate = async (req: WeatherByCoordinateRequest): Promise<Weather | null> => {
-    const data = await p.openWeatherMapProvider.getWeatherByCoordinate(req);
-    return data;
+    const { lat, lon } = req;
+    const cachedKey = `${lat}&${lon}`;
+
+    try {
+      const cachedData = await c.get(cachedKey);
+      if (cachedData !== null) {
+        return JSON.parse(cachedData);
+      }
+      const data = await p.openWeatherMapProvider.getWeatherByCoordinate(req);
+      await c.set(cachedKey, JSON.stringify(data));
+      return data;
+    } catch (err) {
+      throw err;
+    }
   };
 
   const getWeatherByCityName = async (req: WeatherByCityNameRequest): Promise<Weather | null> => {
-    const data = await p.openWeatherMapProvider.getWeatherByCityName(req);
-    return data;
+    const { q } = req;
+    const cachedKey = q;
+
+    try {
+      const cachedData = await c.get(cachedKey);
+      if (cachedData !== null) {
+        return JSON.parse(cachedData);
+      }
+      const data = await p.openWeatherMapProvider.getWeatherByCityName(req);
+      await c.set(cachedKey, JSON.stringify(data));
+      return data;
+    } catch (err) {
+      throw err;
+    }
   };
 
   const getWeatherByCityId = async (req: WeatherByCityIdRequest): Promise<Weather | null> => {
-    const data = await p.openWeatherMapProvider.getWeatherByCityId(req);
-    return data;
+    const { id } = req;
+    const cachedKey = id;
+
+    try {
+      const cachedData = await c.get(cachedKey);
+      if (cachedData !== null) {
+        return JSON.parse(cachedData);
+      }
+      const data = await p.openWeatherMapProvider.getWeatherByCityId(req);
+      await c.set(cachedKey, JSON.stringify(data));
+      return data;
+    } catch (err) {
+      throw err;
+    }
   };
 
   const getWeatherByZipCode = async (req: WeatherByZipCodeRequest): Promise<Weather | null> => {
-    const data = await p.openWeatherMapProvider.getWeatherByZipCode(req);
-    return data;
+    const { zip } = req;
+    const cachedKey = zip;
+
+    try {
+      const cachedData = await c.get(cachedKey);
+      if (cachedData !== null) {
+        return JSON.parse(cachedData);
+      }
+      const data = await p.openWeatherMapProvider.getWeatherByZipCode(req);
+      await c.set(cachedKey, JSON.stringify(data));
+      return data;
+    } catch (err) {
+      throw err;
+    }
   };
 
   return {

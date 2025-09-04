@@ -11,11 +11,11 @@ export interface ProvidersLoader {
   load: () => Providers;
 }
 
-export const providersLoader = (config: Config): ProvidersLoader => {
+export const providersLoader = (con: Config): ProvidersLoader => {
   const load = () => {
     return {
-      openWeatherMapProvider: openWeatherMapProvider(config),
-      redisProvider: redisProvider(config),
+      openWeatherMapProvider: openWeatherMapProvider(con),
+      redisProvider: redisProvider(con),
     };
   };
 
