@@ -1,9 +1,17 @@
-import express from "express";
-const weatherRoutes = express.Router();
+import { Router } from "express";
+import { Controllers } from "../../controllers";
 
-weatherRoutes.get("/weather/coordinate", () => {});
-weatherRoutes.get("/weather/city_name", () => {});
-weatherRoutes.get("/weather/city_id", () => {});
-weatherRoutes.get("/weather/zip_code", () => {});
+export const weatherRoutesLoader = (r: Router, c: Controllers) => {
+  const load = () => {
+    r.get("/weather/coordinate", c.weatherController.getWeatherByCoordinate);
+    r.get("/weather/city_name", c.weatherController.getWeatherByCityName);
+    r.get("/weather/city_id", c.weatherController.getWeatherByCityId);
+    r.get("/weather/zip_code", c.weatherController.getWeatherByZipCode);
 
-export default weatherRoutes;
+    return r;
+  };
+
+  return {
+    load,
+  };
+};

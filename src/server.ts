@@ -2,12 +2,14 @@ import { Server } from "node:http";
 import app from "./app";
 import Redis from "ioredis";
 import dotenv from "dotenv";
+import express from "express";
 import { configLoader } from "./config/config";
 import { Providers, providersLoader } from "./providers";
 import { repositoriesLoader } from "./repositories";
 import { servicesLoader } from "./services";
 import { controllersLoader } from "./controllers";
 import { middlewaresLoader } from "./middlewares";
+import { routesLoader } from "./routes";
 
 let providers: Providers;
 let redis: Redis;
@@ -37,6 +39,12 @@ const startServer = async () => {
     const ctl = controllersLoader(services);
     const controllers = ctl.load();
 
+    const router = express.Router();
+
+    const rtl = routesLoader(router, controllers);
+    const routes = rtl.load();
+
+    app.use(routes);
     app.use(middlewares.errorMiddleware.errorHandler);
     app.use(middlewares.notFoundMiddleware.notFoundHandler);
 

@@ -1,7 +1,18 @@
-import express from "express";
-import weatherRoutes from "./weather.routes";
-const routesv1 = express.Router();
+import { Router } from "express";
+import { Controllers } from "../../controllers";
+import { weatherRoutesLoader } from "./weather.routes";
 
-routesv1.use("/api/v1", weatherRoutes);
+export const routesv1Loader = (r: Router, c: Controllers) => {
+  const load = () => {
+    const wrl = weatherRoutesLoader(r, c);
+    const weatherRoutes = wrl.load();
 
-export default routesv1;
+    r.use("/api/v1", weatherRoutes);
+
+    return r;
+  };
+
+  return {
+    load,
+  };
+};
