@@ -71,7 +71,7 @@ export const appLoader = (): AppLoader => {
 
     const router = express.Router();
 
-    const rtl = routesLoader(router, controllers);
+    const rtl = routesLoader(router, middlewares, controllers);
     const routes = rtl.load();
 
     app.use(routes);
