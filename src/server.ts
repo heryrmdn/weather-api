@@ -17,7 +17,7 @@ const serverLoader = (): ServerLoader => {
       main = await al.load();
 
       server = main.app.listen(main.config.port, () => {
-        console.log(`Server ready at: ${main.config.host}:${main.config.port}`);
+        console.log(`Server ready at port: ${main.config.port}`);
       });
     } catch (err) {
       throw err;
