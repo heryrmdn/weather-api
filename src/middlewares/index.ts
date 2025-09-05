@@ -1,11 +1,11 @@
 import { errorMiddleware, ErrorMiddleware } from "./error.middleware";
 import { notFoundMiddleware, NotFoundMiddleware } from "./not_found.middleware";
-import { rateLimiterMiddleware, RateLimiterMiddleware } from "./rate_limiter.middleware";
+import { RateLimiter, RateLimiterMiddleware, rateLimiterMiddleware } from "./rate_limiter.middleware";
 
 export interface Middlewares {
   errorMiddleware: ErrorMiddleware;
   notFoundMiddleware: NotFoundMiddleware;
-  rateLimiterMiddleware: RateLimiterMiddleware;
+  rateLimiterMiddleware: RateLimiter;
 }
 
 export interface MiddlewaresLoader {
@@ -13,11 +13,13 @@ export interface MiddlewaresLoader {
 }
 
 export const middlewaresLoader = (): MiddlewaresLoader => {
-  const load = () => {
+  const load = (): Middlewares => {
+    const rl = rateLimiterMiddleware();
+
     return {
       errorMiddleware: errorMiddleware(),
       notFoundMiddleware: notFoundMiddleware(),
-      rateLimiterMiddleware: rateLimiterMiddleware(),
+      rateLimiterMiddleware: rl.load(),
     };
   };
 

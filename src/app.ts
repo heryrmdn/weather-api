@@ -71,8 +71,10 @@ export const appLoader = (): AppLoader => {
 
     const router = express.Router();
 
-    const rtl = routesLoader(router, middlewares, controllers);
+    const rtl = routesLoader(router, controllers);
     const routes = rtl.load();
+
+    app.use(middlewares.rateLimiterMiddleware.limiter);
 
     app.use(routes);
     app.use(middlewares.errorMiddleware.errorHandler);

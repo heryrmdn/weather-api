@@ -1,11 +1,15 @@
 import rateLimit, { RateLimitRequestHandler } from "express-rate-limit";
 
+export interface RateLimiter {
+  limiter: RateLimitRequestHandler;
+}
+
 export interface RateLimiterMiddleware {
-  rateLimiterHandler: () => void;
+  load: () => RateLimiter;
 }
 
 export const rateLimiterMiddleware = (): RateLimiterMiddleware => {
-  const rateLimiterHandler = (): RateLimitRequestHandler => {
+  const load = (): RateLimiter => {
     const limiter = rateLimit({
       windowMs: 15 * 60 * 1000,
       limit: 100,
@@ -14,9 +18,12 @@ export const rateLimiterMiddleware = (): RateLimiterMiddleware => {
       ipv6Subnet: 56,
     });
 
-    return limiter;
+    return {
+      limiter,
+    };
   };
+
   return {
-    rateLimiterHandler,
+    load,
   };
 };

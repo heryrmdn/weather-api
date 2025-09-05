@@ -1,11 +1,10 @@
 import { Router } from "express";
 import { Controllers } from "../../controllers";
 import { weatherRoutesLoader } from "./weather.routes";
-import { Middlewares } from "../../middlewares";
 
-export const routesv1Loader = (r: Router, m: Middlewares, c: Controllers) => {
+export const routesv1Loader = (r: Router, c: Controllers) => {
   const load = () => {
-    const wrl = weatherRoutesLoader(r, m, c);
+    const wrl = weatherRoutesLoader(r, c);
     const weatherRoutes = wrl.load();
 
     r.use("/api/v1", weatherRoutes);
