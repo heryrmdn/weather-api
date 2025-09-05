@@ -18,7 +18,7 @@ export const openWeatherMapProvider = (con: Config): OpenWeatherMapProvider => {
       if (!response.ok) {
         throw new CustomError(response.status, response.statusText);
       }
-      const data = await response.json();
+      const data = await response.json() as Weather;
       return data;
     } catch (err) {
       throw err;
@@ -33,7 +33,7 @@ export const openWeatherMapProvider = (con: Config): OpenWeatherMapProvider => {
       if (!response.ok) {
         throw new CustomError(response.status, response.statusText);
       }
-      const data = await response.json();
+      const data = await response.json() as Weather;
       return data;
     } catch (err) {
       throw err;
@@ -48,7 +48,7 @@ export const openWeatherMapProvider = (con: Config): OpenWeatherMapProvider => {
       if (!response.ok) {
         throw new CustomError(response.status, response.statusText);
       }
-      const data = await response.json();
+      const data = await response.json() as Weather;
       return data;
     } catch (err) {
       throw err;
@@ -63,7 +63,7 @@ export const openWeatherMapProvider = (con: Config): OpenWeatherMapProvider => {
       if (!response.ok) {
         throw new CustomError(response.status, response.statusText);
       }
-      const data = await response.json();
+      const data = await response.json() as Weather;
       return data;
     } catch (err) {
       throw err;
