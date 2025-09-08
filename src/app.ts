@@ -74,6 +74,8 @@ export const appLoader = (): AppLoader => {
     const rtl = routesLoader(router, controllers);
     const routes = rtl.load();
 
+    app.use(middlewares.morganMiddleware.morgan);
+
     app.use(middlewares.rateLimiterMiddleware.limiter);
 
     app.use(routes);

@@ -5,29 +5,30 @@ services:
     container_name: weather-api-app
     build: .
     ports:
-      - "${PORT}:3000"
+      - "3001:3000"
     env_file:
       - .env
     depends_on:
       - redis
     networks:
       - weather-api-network
+    restart: on-failure
 
   redis:
     container_name: weather-api-redis
     image: redis/redis-stack
     ports:
-      - ${REDIS_PORT}:6379
+      - 6380:6379
     volumes:
       - ./redisdata:/data
-    deploy:
-      replicas: 1
-      restart_policy:
-        condition: on-failure
     networks:
       - weather-api-network
+    restart: on-failure
 
 networks:
   weather-api-network:
     name: weather-api-network
     driver: bridge
+
+volumes:
+  redis_data:
