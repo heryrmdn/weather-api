@@ -4,7 +4,7 @@ Simple Weather API.
 
 ## Description
 
-Simple weather API that fetches and returns weather data with implement redis for caching data.
+Simple weather API that fetches and returns weather data with implemented redis for caching data.
 
 ## Getting Started
 
@@ -15,32 +15,41 @@ Prerequisites needed before installing program.
 * node: 22.19.0
 * npm: 10.9.3
 * Typescript: 5.9.2
+* Docker & Docker Compose (if running via container)
 
 
 ### Installing
-
+Clone the repository & install dependencies:
 ```
 npm i
 ```
 
-### Before start redis server
 
-Prerequisites needed before start redis server.
+### Configuration
+1. Rename .env.example to .env
+2. Fill in the required environment variables
 
-* change file name from .env.example to .env
-* fill in the required env data
+## Running the Application with Docker
 
-### Start redis server on docker
+### Step 1: Build Docker images
+
+```
+docker compose build
+```
+
+### Start the containers
 
 ```
 docker compose up -d
 ```
 
-### Executing program
+#### This will:
 
-```
-npm run dev
-```
+* Build the Weather API Docker image
+* Start the API container
+* Start the Redis container
+
+Access the API at: http://localhost:3001
 
 ## Authors
 
