@@ -1,7 +1,7 @@
 import { errorMiddleware, ErrorMiddleware } from "./error.middleware";
-import { Morgan, morganMiddleware, MorganMiddleware } from "./morgan.middleware";
+import { Morgan, morganMiddleware } from "./morgan.middleware";
 import { notFoundMiddleware, NotFoundMiddleware } from "./not_found.middleware";
-import { RateLimiter, RateLimiterMiddleware, rateLimiterMiddleware } from "./rate_limiter.middleware";
+import { RateLimiter, rateLimiterMiddleware } from "./rate_limiter.middleware";
 
 export interface Middlewares {
   errorMiddleware: ErrorMiddleware;
