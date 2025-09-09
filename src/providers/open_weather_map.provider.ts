@@ -1,69 +1,30 @@
 import { Config } from "../config/config";
-import { Weather, WeatherByCityIdRequest, WeatherByCityNameRequest, WeatherByCoordinateRequest, WeatherByZipCodeRequest } from "../interfaces/weather";
+import { Weather, WeatherRequest } from "../interfaces/weather";
 import { CustomError } from "../middlewares/error.middleware";
+import { paramUtil } from "../utils/param.util";
 
 export interface OpenWeatherMapProvider {
-  getWeatherByCoordinate: (req: WeatherByCoordinateRequest) => Promise<Weather | null>;
-  getWeatherByCityName: (req: WeatherByCityNameRequest) => Promise<Weather | null>;
-  getWeatherByCityId: (req: WeatherByCityIdRequest) => Promise<Weather | null>;
-  getWeatherByZipCode: (req: WeatherByZipCodeRequest) => Promise<Weather | null>;
+  getWeather: (req: WeatherRequest) => Promise<Weather | null>;
 }
 
 export const openWeatherMapProvider = (con: Config): OpenWeatherMapProvider => {
-  const getWeatherByCoordinate = async (req: WeatherByCoordinateRequest): Promise<Weather | null> => {
-    const { lat, lon } = req;
-    const url = `${con.weather_api_url}/weather?lat=${lat}&lon=${lon}&appid=${con.weather_api_key}`;
-    try {
-      const response = await fetch(url);
-      if (!response.ok) {
-        throw new CustomError(response.status, response.statusText);
-      }
-      const data = await response.json() as Weather;
-      return data;
-    } catch (err) {
-      throw err;
-    }
-  };
+  const getWeather = async (req: WeatherRequest): Promise<Weather | null> => {
+    const searchParams = new URLSearchParams();
 
-  const getWeatherByCityName = async (req: WeatherByCityNameRequest): Promise<Weather | null> => {
-    const { q } = req;
-    const url = `${con.weather_api_url}/weather?q=${q}&appid=${con.weather_api_key}`;
-    try {
-      const response = await fetch(url);
-      if (!response.ok) {
-        throw new CustomError(response.status, response.statusText);
-      }
-      const data = await response.json() as Weather;
-      return data;
-    } catch (err) {
-      throw err;
-    }
-  };
+    const params = paramUtil.checkParamWeather(req);
+    params.forEach((item) => {
+      searchParams.append(item.name, item.value);
+    });
 
-  const getWeatherByCityId = async (req: WeatherByCityIdRequest): Promise<Weather | null> => {
-    const { id } = req;
-    const url = `${con.weather_api_url}/weather?id=${id}&appid=${con.weather_api_key}`;
-    try {
-      const response = await fetch(url);
-      if (!response.ok) {
-        throw new CustomError(response.status, response.statusText);
-      }
-      const data = await response.json() as Weather;
-      return data;
-    } catch (err) {
-      throw err;
-    }
-  };
+    searchParams.append("appid", con.weather_api_key);
 
-  const getWeatherByZipCode = async (req: WeatherByZipCodeRequest): Promise<Weather | null> => {
-    const { zip } = req;
-    const url = `${con.weather_api_url}/weather?zip=${zip}&appid=${con.weather_api_key}`;
+    const url = `${con.weather_api_url}/weather?${searchParams.toString()}&appid=${con.weather_api_key}`;
     try {
       const response = await fetch(url);
       if (!response.ok) {
         throw new CustomError(response.status, response.statusText);
       }
-      const data = await response.json() as Weather;
+      const data = (await response.json()) as Weather;
       return data;
     } catch (err) {
       throw err;
@@ -71,9 +32,6 @@ export const openWeatherMapProvider = (con: Config): OpenWeatherMapProvider => {
   };
 
   return {
-    getWeatherByCoordinate,
-    getWeatherByCityName,
-    getWeatherByCityId,
-    getWeatherByZipCode,
+    getWeather,
   };
 };
