@@ -10,7 +10,8 @@ export interface WeatherRepository {
 
 export const weatherRepository = (p: Providers, c: Redis): WeatherRepository => {
   const getWeather = async (req: WeatherRequest): Promise<Weather | null> => {
-    const searchParams = paramUtil.setParamWeather(req);
+    const params = paramUtil.checkParamWeather(req);
+    const searchParams = paramUtil.setParamWeather(params);
     const cachedKey = `weather:${searchParams.toString()}`;
 
     try {
@@ -27,7 +28,8 @@ export const weatherRepository = (p: Providers, c: Redis): WeatherRepository => 
   };
 
   const getForecast = async (req: WeatherRequest): Promise<Forecast | null> => {
-    const searchParams = paramUtil.setParamWeather(req);
+    const params = paramUtil.checkParamWeather(req);
+    const searchParams = paramUtil.setParamWeather(params);
     const cachedKey = `forecast:${searchParams.toString()}`;
 
     try {

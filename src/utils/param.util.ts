@@ -7,7 +7,7 @@ interface Param {
 
 interface ParamUtil {
   checkParamWeather: (req: WeatherRequest) => Param[];
-  setParamWeather: (req: WeatherRequest) => URLSearchParams;
+  setParamWeather: (params: Param[]) => URLSearchParams;
 }
 
 const param = (): ParamUtil => {
@@ -24,20 +24,18 @@ const param = (): ParamUtil => {
     } else if (req.zip) {
       params.push({ name: "zip", value: req.zip });
     }
-
     return params;
   };
 
-  const setParamWeather = (req: WeatherRequest): URLSearchParams => {
+  const setParamWeather = (params: Param[]): URLSearchParams => {
     const searchParams = new URLSearchParams();
-    const params = paramUtil.checkParamWeather(req);
 
     params.forEach((item) => {
       searchParams.append(item.name, item.value);
     });
     return searchParams;
   };
-
+  
   return { checkParamWeather, setParamWeather };
 };
 
