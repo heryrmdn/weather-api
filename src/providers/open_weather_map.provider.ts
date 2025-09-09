@@ -10,13 +10,7 @@ export interface OpenWeatherMapProvider {
 
 export const openWeatherMapProvider = (con: Config): OpenWeatherMapProvider => {
   const getWeather = async (req: WeatherRequest): Promise<Weather | null> => {
-    const searchParams = new URLSearchParams();
-
-    const params = paramUtil.checkParamWeather(req);
-    params.forEach((item) => {
-      searchParams.append(item.name, item.value);
-    });
-
+    const searchParams = paramUtil.setParamWeather(req);
     searchParams.append("appid", con.weather_api_key);
 
     const url = `${con.weather_api_url}/weather?${searchParams.toString()}&appid=${con.weather_api_key}`;
@@ -33,13 +27,7 @@ export const openWeatherMapProvider = (con: Config): OpenWeatherMapProvider => {
   };
 
   const getForecast = async (req: WeatherRequest): Promise<Forecast | null> => {
-    const searchParams = new URLSearchParams();
-
-    const params = paramUtil.checkParamWeather(req);
-    params.forEach((item) => {
-      searchParams.append(item.name, item.value);
-    });
-
+    const searchParams = paramUtil.setParamWeather(req);
     searchParams.append("appid", con.weather_api_key);
 
     const url = `${con.weather_api_url}/forecast?${searchParams.toString()}&cnt=8&appid=${con.weather_api_key}`;

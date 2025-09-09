@@ -10,13 +10,7 @@ export interface WeatherRepository {
 
 export const weatherRepository = (p: Providers, c: Redis): WeatherRepository => {
   const getWeather = async (req: WeatherRequest): Promise<Weather | null> => {
-    const searchParams = new URLSearchParams();
-
-    const params = paramUtil.checkParamWeather(req);
-    params.forEach((item) => {
-      searchParams.append(item.name, item.value);
-    });
-
+    const searchParams = paramUtil.setParamWeather(req);
     const cachedKey = `weather:${searchParams.toString()}`;
 
     try {
@@ -25,7 +19,7 @@ export const weatherRepository = (p: Providers, c: Redis): WeatherRepository => 
         return JSON.parse(cachedData);
       }
       const data = await p.openWeatherMapProvider.getWeather(req);
-      await c.set(cachedKey, JSON.stringify(data), "EX", 10000);
+      await c.set(cachedKey, JSON.stringify(data), "EX", 600);
       return data;
     } catch (err) {
       throw err;
@@ -33,13 +27,7 @@ export const weatherRepository = (p: Providers, c: Redis): WeatherRepository => 
   };
 
   const getForecast = async (req: WeatherRequest): Promise<Forecast | null> => {
-    const searchParams = new URLSearchParams();
-
-    const params = paramUtil.checkParamWeather(req);
-    params.forEach((item) => {
-      searchParams.append(item.name, item.value);
-    });
-
+    const searchParams = paramUtil.setParamWeather(req);
     const cachedKey = `forecast:${searchParams.toString()}`;
 
     try {
@@ -48,7 +36,7 @@ export const weatherRepository = (p: Providers, c: Redis): WeatherRepository => 
         return JSON.parse(cachedData);
       }
       const data = await p.openWeatherMapProvider.getForecast(req);
-      await c.set(cachedKey, JSON.stringify(data), "EX", 10000);
+      await c.set(cachedKey, JSON.stringify(data), "EX", 600);
       return data;
     } catch (err) {
       throw err;

@@ -7,6 +7,7 @@ interface Param {
 
 interface ParamUtil {
   checkParamWeather: (req: WeatherRequest) => Param[];
+  setParamWeather: (req: WeatherRequest) => URLSearchParams;
 }
 
 const param = (): ParamUtil => {
@@ -27,7 +28,17 @@ const param = (): ParamUtil => {
     return params;
   };
 
-  return { checkParamWeather };
+  const setParamWeather = (req: WeatherRequest): URLSearchParams => {
+    const searchParams = new URLSearchParams();
+    const params = paramUtil.checkParamWeather(req);
+
+    params.forEach((item) => {
+      searchParams.append(item.name, item.value);
+    });
+    return searchParams;
+  };
+
+  return { checkParamWeather, setParamWeather };
 };
 
 export const paramUtil = param();
