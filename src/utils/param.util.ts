@@ -24,6 +24,15 @@ const param = (): ParamUtil => {
     } else if (req.zip) {
       params.push({ name: "zip", value: req.zip });
     }
+
+    if (req.cnt) {
+      params.push({ name: "cnt", value: req.cnt });
+    } else if (req.limit) {
+      params.push({ name: "limit", value: req.limit });
+    }
+
+    console.log("params: ", params);
+
     return params;
   };
 
@@ -35,7 +44,7 @@ const param = (): ParamUtil => {
     });
     return searchParams;
   };
-  
+
   return { checkParamWeather, setParamWeather };
 };
 

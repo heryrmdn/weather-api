@@ -12,6 +12,8 @@ const request = (): RequestUtil => {
       q: req.q ?? null,
       id: req.id ?? null,
       zip: req.zip ?? null,
+      cnt: req.cnt ?? null,
+      limit: req.limit ?? null,
     };
   };
 

@@ -7,6 +7,7 @@ import { requestUtil } from "../utils/request.util";
 export interface WeatherController {
   getWeather: (req: Request, res: Response, next: NextFunction) => void;
   getForecast: (req: Request, res: Response, next: NextFunction) => void;
+  getDirect: (req: Request, res: Response, next: NextFunction) => void;
 }
 
 export const weatherController = (s: Services): WeatherController => {
@@ -36,8 +37,22 @@ export const weatherController = (s: Services): WeatherController => {
     }
   };
 
+  const getDirect = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const weatherReq = requestUtil.checkRequestWeather(req.query);
+
+      const data = await s.weatherService.getDirect(weatherReq);
+      const responseData = responseUtil.responseData(status.OK, status["200_NAME"], data);
+
+      return res.status(status.OK).json(responseData);
+    } catch (err) {
+      next(err);
+    }
+  };
+
   return {
     getWeather,
     getForecast,
+    getDirect,
   };
 };

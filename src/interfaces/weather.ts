@@ -4,6 +4,8 @@ export interface WeatherRequest {
   q?: string | null;
   id?: string | null;
   zip?: string | null;
+  cnt?: string | null;
+  limit?: string | null;
 }
 
 export interface Weather {
@@ -110,4 +112,15 @@ export interface Forecast {
     sunrise: number;
     sunset: number;
   };
+}
+
+export interface Direct {
+  name: string;
+  local_names: {
+    [key: string]: string;
+  };
+  lat: number;
+  lon: number;
+  country: string;
+  state?: string;
 }

@@ -5,7 +5,8 @@ export interface Config {
   redis_host: string;
   redis_port: number;
   weather_api_key: string;
-  weather_api_url: string;
+  weather_data_api_url: string;
+  weather_geo_api_url: string;
 }
 export interface ConfigLoader {
   load: () => Config;
@@ -20,7 +21,8 @@ export const configLoader = (): ConfigLoader => {
       redis_host: process.env.REDIS_HOST ?? "",
       redis_port: Number(process.env.REDIS_PORT),
       weather_api_key: process.env.WEATHER_API_KEY ?? "",
-      weather_api_url: process.env.WEATHER_API_URL ?? "",
+      weather_data_api_url: process.env.WEATHER_DATA_API_URL ?? "",
+      weather_geo_api_url: process.env.WEATHER_GEO_API_URL ?? "",
     };
   };
 
