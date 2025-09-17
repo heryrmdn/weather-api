@@ -30,9 +30,6 @@ const param = (): ParamUtil => {
     } else if (req.limit) {
       params.push({ name: "limit", value: req.limit });
     }
-
-    console.log("params: ", params);
-
     return params;
   };
 
