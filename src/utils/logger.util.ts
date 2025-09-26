@@ -10,7 +10,7 @@ const logger = () => {
     winston.format.prettyPrint({
       depth: 5,
     }),
-    winston.format.printf((info: any) => `${info.timestamp} ${info.level}: ${info.message}`)
+    winston.format.printf((info: winston.Logform.TransformableInfo) => `${info.level}: ${info.timestamp} ${info.message}`)
   );
 
   const consoleFormat = winston.format.combine(
@@ -21,7 +21,7 @@ const logger = () => {
     winston.format.prettyPrint({
       depth: 5,
     }),
-    winston.format.printf((info: any) => `${info.timestamp} ${info.level}: ${info.message}`)
+    winston.format.printf((info: winston.Logform.TransformableInfo) => `${info.level}: ${info.timestamp} ${info.message}`)
   );
 
   const consoleTransport = new winston.transports.Console({
